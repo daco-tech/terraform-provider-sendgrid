@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func dataSendgridUnsubscribeGroup() *schema.Resource {
@@ -49,7 +49,7 @@ func dataSendgridUnsubscribeGroupRead(context context.Context, d *schema.Resourc
 
 		return resourceSendgridUnsubscribeGroupRead(context, d, m)
 	case name != "":
-		groups, err := c.ReadUnsubscribeGroups()
+		groups, err := c.ReadUnsubscribeGroups(context)
 		if err.Err != nil {
 			return diag.FromErr(err.Err)
 		}

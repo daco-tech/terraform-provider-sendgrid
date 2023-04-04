@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/anna-money/terraform-provider-sendgrid/sendgrid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/trois-six/terraform-provider-sendgrid/sendgrid"
 )
 
 var testAccProviders map[string]*schema.Provider
@@ -26,7 +26,7 @@ func TestProvider(t *testing.T) {
 }
 
 func TestProvider_impl(t *testing.T) {
-	var _ *schema.Provider = sendgrid.Provider()
+	_ = sendgrid.Provider()
 }
 
 func testAccPreCheck(t *testing.T) {

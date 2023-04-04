@@ -1,13 +1,14 @@
 package sendgrid_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func TestAccSendgridSubuserBasic(t *testing.T) {
@@ -40,8 +41,8 @@ func testAccCheckSendgridSubuserDestroy(s *terraform.State) error {
 		}
 
 		SubuserName := rs.Primary.ID
-
-		_, requestErr := c.DeleteSubuser(SubuserName)
+		ctx := context.Background()
+		_, requestErr := c.DeleteSubuser(ctx, SubuserName)
 		if requestErr.Err != nil {
 			return requestErr.Err
 		}

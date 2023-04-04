@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go/parser"
 	"go/token"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,8 +13,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/anna-money/terraform-provider-sendgrid/sendgrid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/trois-six/terraform-provider-sendgrid/sendgrid"
 )
 
 const (
@@ -162,7 +161,7 @@ func genIdx(fpath string) { //nolint:cyclop,funlen
 		}
 	}()
 
-	idxTPL, err := ioutil.ReadFile(indexFile)
+	idxTPL, err := os.ReadFile(indexFile)
 	if err != nil {
 		log.Printf("[FAIL!]open file %s failed: %s", indexFile, err)
 
@@ -313,7 +312,7 @@ func genDoc(dtype, dtypeFolder, fpath, name string, resource *schema.Resource) {
 		}
 	}()
 
-	docTPL, err := ioutil.ReadFile(docFile)
+	docTPL, err := os.ReadFile(docFile)
 	if err != nil {
 		log.Printf("[FAIL!]open file %s failed: %s", docFile, err)
 
@@ -386,6 +385,7 @@ func getFileDescription(fname string) (string, error) {
 }
 
 // getSubStruct get sub structure from go file.
+//
 //nolint:gocognit
 func getSubStruct(step int, k string, v *schema.Schema) []string { //nolint:cyclop,funlen
 	var subStructs []string

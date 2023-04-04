@@ -2,12 +2,14 @@
 Provide a resource to manage a domain authentication.
 Example Usage
 ```hcl
-resource "sendgrid_domain_authentication" "default" {
-	domain = "example.com"
-    ips = [ "10.10.10.10" ]
-    is_default = true
-    automatic_security = false
-}
+
+	resource "sendgrid_domain_authentication" "default" {
+		domain = "example.com"
+	    ips = [ "10.10.10.10" ]
+	    is_default = true
+	    automatic_security = false
+	}
+
 ```
 Import
 An unsubscribe group can be imported, e.g.
@@ -21,9 +23,9 @@ import (
 	"context"
 	"fmt"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func resourceSendgridDomainAuthentication() *schema.Resource { //nolint:funlen
@@ -129,7 +131,8 @@ func resourceSendgridDomainAuthentication() *schema.Resource { //nolint:funlen
 func resourceSendgridDomainAuthenticationCreate(
 	ctx context.Context,
 	d *schema.ResourceData,
-	m interface{}) diag.Diagnostics {
+	m interface{},
+) diag.Diagnostics {
 	c := m.(*sendgrid.Client)
 
 	domain := d.Get("domain").(string)
@@ -147,6 +150,7 @@ func resourceSendgridDomainAuthenticationCreate(
 
 	apiKeyStruct, err := sendgrid.RetryOnRateLimit(ctx, d, func() (interface{}, sendgrid.RequestError) {
 		return c.CreateDomainAuthentication(
+			ctx,
 			domain,
 			subdomain,
 			ips,
@@ -169,12 +173,13 @@ func resourceSendgridDomainAuthenticationCreate(
 }
 
 func resourceSendgridDomainAuthenticationRead( //nolint:funlen,cyclop
-	_ context.Context,
+	ctx context.Context,
 	d *schema.ResourceData,
-	m interface{}) diag.Diagnostics {
+	m interface{},
+) diag.Diagnostics {
 	c := m.(*sendgrid.Client)
 
-	auth, err := c.ReadDomainAuthentication(d.Id())
+	auth, err := c.ReadDomainAuthentication(ctx, d.Id())
 	if err.Err != nil {
 		return diag.FromErr(err.Err)
 	}
@@ -268,21 +273,22 @@ func resourceSendgridDomainAuthenticationRead( //nolint:funlen,cyclop
 func resourceSendgridDomainAuthenticationUpdate(
 	ctx context.Context,
 	d *schema.ResourceData,
-	m interface{}) diag.Diagnostics {
+	m interface{},
+) diag.Diagnostics {
 	c := m.(*sendgrid.Client)
 
 	isDefault := d.Get("is_default").(bool)
 	customSPF := d.Get("custom_spf").(bool)
 
 	auth, err := sendgrid.RetryOnRateLimit(ctx, d, func() (interface{}, sendgrid.RequestError) {
-		return c.UpdateDomainAuthentication(d.Id(), isDefault, customSPF)
+		return c.UpdateDomainAuthentication(ctx, d.Id(), isDefault, customSPF)
 	})
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	if !auth.(*sendgrid.DomainAuthentication).Valid && d.Get("valid").(bool) {
-		if err := c.ValidateDomainAuthentication(d.Id()); err.Err != nil || err.StatusCode != 200 {
+		if err := c.ValidateDomainAuthentication(ctx, d.Id()); err.Err != nil || err.StatusCode != 200 {
 			if err.Err != nil {
 				return diag.FromErr(err.Err)
 			}
@@ -297,11 +303,12 @@ func resourceSendgridDomainAuthenticationUpdate(
 func resourceSendgridDomainAuthenticationDelete(
 	ctx context.Context,
 	d *schema.ResourceData,
-	m interface{}) diag.Diagnostics {
+	m interface{},
+) diag.Diagnostics {
 	c := m.(*sendgrid.Client)
 
 	_, err := sendgrid.RetryOnRateLimit(ctx, d, func() (interface{}, sendgrid.RequestError) {
-		return c.DeleteDomainAuthentication(d.Id())
+		return c.DeleteDomainAuthentication(ctx, d.Id())
 	})
 	if err != nil {
 		return diag.FromErr(err)

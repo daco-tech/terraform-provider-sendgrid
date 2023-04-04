@@ -3,9 +3,9 @@ package sendgrid
 import (
 	"context"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func dataSendgridTemplateVersion() *schema.Resource {
@@ -27,11 +27,11 @@ func dataSendgridTemplateVersion() *schema.Resource {
 	}
 }
 
-func dataSendgridTemplateVersionRead(_ context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func dataSendgridTemplateVersionRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	templateID := d.Get("template_id").(string)
 	c := m.(*sendgrid.Client)
 
-	template, err := c.ReadTemplate(templateID)
+	template, err := c.ReadTemplate(ctx, templateID)
 	if err != nil {
 		return diag.FromErr(err)
 	}

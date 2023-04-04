@@ -3,9 +3,9 @@ package sendgrid
 import (
 	"context"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func dataSendgridTemplate() *schema.Resource {
@@ -59,7 +59,7 @@ func dataSendgridTemplateRead(context context.Context, d *schema.ResourceData, m
 			generation = "dynamic"
 		}
 
-		templates, err := c.ReadTemplates(generation)
+		templates, err := c.ReadTemplates(context, generation)
 		if err != nil {
 			return diag.FromErr(err)
 		}

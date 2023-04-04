@@ -1,6 +1,7 @@
 package sendgrid
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -39,7 +40,7 @@ func parseAPIKeys(respBody string) ([]APIKey, RequestError) {
 }
 
 // CreateAPIKey creates an APIKey and returns it.
-func (c *Client) CreateAPIKey(name string, scopes []string) (*APIKey, RequestError) {
+func (c *Client) CreateAPIKey(ctx context.Context, name string, scopes []string) (*APIKey, RequestError) {
 	if name == "" {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -47,7 +48,7 @@ func (c *Client) CreateAPIKey(name string, scopes []string) (*APIKey, RequestErr
 		}
 	}
 
-	respBody, statusCode, err := c.Post("POST", "/api_keys", APIKey{
+	respBody, statusCode, err := c.Post(ctx, "POST", "/api_keys", APIKey{
 		Name:   name,
 		Scopes: scopes,
 	})
@@ -69,7 +70,7 @@ func (c *Client) CreateAPIKey(name string, scopes []string) (*APIKey, RequestErr
 }
 
 // ReadAPIKey retreives an APIKey and returns it.
-func (c *Client) ReadAPIKey(id string) (*APIKey, RequestError) {
+func (c *Client) ReadAPIKey(ctx context.Context, id string) (*APIKey, RequestError) {
 	if id == "" {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -77,7 +78,7 @@ func (c *Client) ReadAPIKey(id string) (*APIKey, RequestError) {
 		}
 	}
 
-	respBody, _, err := c.Get("GET", "/api_keys/"+id)
+	respBody, _, err := c.Get(ctx, "GET", "/api_keys/"+id)
 	if err != nil {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -88,8 +89,8 @@ func (c *Client) ReadAPIKey(id string) (*APIKey, RequestError) {
 	return parseAPIKey(respBody)
 }
 
-func (c *Client) ReadAPIKeys() ([]APIKey, RequestError) {
-	respBody, _, err := c.Get("GET", "/api_keys")
+func (c *Client) ReadAPIKeys(ctx context.Context) ([]APIKey, RequestError) {
+	respBody, _, err := c.Get(ctx, "GET", "/api_keys")
 	if err != nil {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -101,7 +102,7 @@ func (c *Client) ReadAPIKeys() ([]APIKey, RequestError) {
 }
 
 // UpdateAPIKey edits an APIKey and returns it.
-func (c *Client) UpdateAPIKey(id, name string, scopes []string) (*APIKey, RequestError) {
+func (c *Client) UpdateAPIKey(ctx context.Context, id, name string, scopes []string) (*APIKey, RequestError) {
 	if id == "" {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -118,7 +119,7 @@ func (c *Client) UpdateAPIKey(id, name string, scopes []string) (*APIKey, Reques
 		t.Scopes = scopes
 	}
 
-	respBody, _, err := c.Post("PUT", "/api_keys/"+id, t)
+	respBody, _, err := c.Post(ctx, "PUT", "/api_keys/"+id, t)
 	if err != nil {
 		return nil, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -130,7 +131,7 @@ func (c *Client) UpdateAPIKey(id, name string, scopes []string) (*APIKey, Reques
 }
 
 // DeleteAPIKey deletes an APIKey.
-func (c *Client) DeleteAPIKey(id string) (bool, RequestError) {
+func (c *Client) DeleteAPIKey(ctx context.Context, id string) (bool, RequestError) {
 	if id == "" {
 		return false, RequestError{
 			StatusCode: http.StatusInternalServerError,
@@ -138,7 +139,7 @@ func (c *Client) DeleteAPIKey(id string) (bool, RequestError) {
 		}
 	}
 
-	responseBody, statusCode, err := c.Get("DELETE", "/api_keys/"+id)
+	responseBody, statusCode, err := c.Get(ctx, "DELETE", "/api_keys/"+id)
 	if err != nil {
 		return false, RequestError{
 			StatusCode: http.StatusInternalServerError,

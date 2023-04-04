@@ -2,40 +2,48 @@
 Resources List
 
 API key Resource
-  sendgrid_api_key
+
+	sendgrid_api_key
 
 Domain authentication Resource
-  sendgrid_domain_authentication
+
+	sendgrid_domain_authentication
 
 Link branding Resource
-  sendgrid_link_branding
+
+	sendgrid_link_branding
 
 SSO Resources
-  sendgrid_sso_certificate
-  sendgrid sso_integration
+
+	sendgrid_sso_certificate
+	sendgrid sso_integration
 
 Subuser Resource
-  sendgrid_subuser
+
+	sendgrid_subuser
 
 Template Resources
-  sendgrid_template
-  sendgrid_template_version
+
+	sendgrid_template
+	sendgrid_template_version
 
 Unsubscribe Group Resource
-  sendgrid_unsubscribe_group
+
+	sendgrid_unsubscribe_group
 
 WebHook Resources
-  sendgrid_parse_webhook
-  sendgrid_event_webhook
+
+	sendgrid_parse_webhook
+	sendgrid_event_webhook
 */
 package sendgrid
 
 import (
 	"context"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 const (
@@ -69,6 +77,7 @@ func Provider() *schema.Provider {
 			"sendgrid_template":          dataSendgridTemplate(),
 			"sendgrid_template_version":  dataSendgridTemplateVersion(),
 			"sendgrid_unsubscribe_group": dataSendgridUnsubscribeGroup(),
+			"sendgrid_teammate":          dataSendgridTeammate(),
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
@@ -83,6 +92,7 @@ func Provider() *schema.Provider {
 			"sendgrid_link_branding":         resourceSendgridLinkBranding(),
 			"sendgrid_sso_integration":       resourceSendgridSSOIntegration(),
 			"sendgrid_sso_certificate":       resourceSendgridSSOCertificate(),
+			"sendgrid_teammate":              resourceSendgridTeammate(),
 		},
 
 		ConfigureContextFunc: providerConfigure,

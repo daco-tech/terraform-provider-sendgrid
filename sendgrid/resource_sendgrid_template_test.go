@@ -1,13 +1,14 @@
 package sendgrid_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
+	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	sendgrid "github.com/trois-six/terraform-provider-sendgrid/sdk"
 )
 
 func TestAccSendgridTemplateBasic(t *testing.T) {
@@ -39,7 +40,8 @@ func testAccCheckSendgridTemplateDestroy(s *terraform.State) error {
 
 		templateID := rs.Primary.ID
 
-		_, err := c.DeleteTemplate(templateID)
+		ctx := context.Background()
+		_, err := c.DeleteTemplate(ctx, templateID)
 		if err != nil {
 			return err
 		}

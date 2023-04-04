@@ -1,6 +1,7 @@
 package sendgrid
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 )
@@ -42,7 +43,7 @@ func parseTemplates(respBody string) ([]Template, error) {
 }
 
 // CreateTemplate creates a transactional template and returns it.
-func (c *Client) CreateTemplate(name, generation string) (*Template, error) {
+func (c *Client) CreateTemplate(ctx context.Context, name, generation string) (*Template, error) {
 	if name == "" {
 		return nil, ErrTemplateNameRequired
 	}
@@ -51,10 +52,11 @@ func (c *Client) CreateTemplate(name, generation string) (*Template, error) {
 		generation = "dynamic"
 	}
 
-	respBody, _, err := c.Post("POST", "/templates", Template{
+	respBody, _, err := c.Post(ctx, "POST", "/templates", Template{
 		Name:       name,
 		Generation: generation,
 	})
+	fmt.Printf("ERROR from tmpl: %v", err)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating template: %w", err)
 	}
@@ -63,12 +65,12 @@ func (c *Client) CreateTemplate(name, generation string) (*Template, error) {
 }
 
 // ReadTemplate retreives a transactional template and returns it.
-func (c *Client) ReadTemplate(id string) (*Template, error) {
+func (c *Client) ReadTemplate(ctx context.Context, id string) (*Template, error) {
 	if id == "" {
 		return nil, ErrTemplateIDRequired
 	}
 
-	respBody, _, err := c.Get("GET", "/templates/"+id)
+	respBody, _, err := c.Get(ctx, "GET", "/templates/"+id)
 	if err != nil {
 		return nil, fmt.Errorf("failed reading template: %w", err)
 	}
@@ -76,8 +78,8 @@ func (c *Client) ReadTemplate(id string) (*Template, error) {
 	return parseTemplate(respBody)
 }
 
-func (c *Client) ReadTemplates(generation string) ([]Template, error) {
-	respBody, _, err := c.Get("GET", "/templates?page_size=200&generations="+generation)
+func (c *Client) ReadTemplates(ctx context.Context, generation string) ([]Template, error) {
+	respBody, _, err := c.Get(ctx, "GET", "/templates?page_size=200&generations="+generation)
 	if err != nil {
 		return nil, fmt.Errorf("failed reading template: %w", err)
 	}
@@ -87,7 +89,7 @@ func (c *Client) ReadTemplates(generation string) ([]Template, error) {
 
 // UpdateTemplate edits a transactional template and returns it.
 // We can't change the "generation" of a transactional template.
-func (c *Client) UpdateTemplate(id, name string) (*Template, error) {
+func (c *Client) UpdateTemplate(ctx context.Context, id, name string) (*Template, error) {
 	if id == "" {
 		return nil, ErrTemplateIDRequired
 	}
@@ -96,7 +98,7 @@ func (c *Client) UpdateTemplate(id, name string) (*Template, error) {
 		return nil, ErrTemplateNameRequired
 	}
 
-	respBody, _, err := c.Post("PATCH", "/templates/"+id, Template{
+	respBody, _, err := c.Post(ctx, "PATCH", "/templates/"+id, Template{
 		Name: name,
 	},
 	)
@@ -108,12 +110,12 @@ func (c *Client) UpdateTemplate(id, name string) (*Template, error) {
 }
 
 // DeleteTemplate deletes a transactional template.
-func (c *Client) DeleteTemplate(id string) (bool, error) {
+func (c *Client) DeleteTemplate(ctx context.Context, id string) (bool, error) {
 	if id == "" {
 		return false, ErrTemplateIDRequired
 	}
 
-	if _, statusCode, err := c.Get("DELETE", "/templates/"+id); statusCode > 299 || err != nil {
+	if _, statusCode, err := c.Get(ctx, "DELETE", "/templates/"+id); statusCode > 299 || err != nil {
 		return false, fmt.Errorf("failed deleting template: %w", err)
 	}
 
