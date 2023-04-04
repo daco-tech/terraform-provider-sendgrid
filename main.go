@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 
-	"github.com/anna-money/terraform-provider-sendgrid/sendgrid"
+	"github.com/daco-tech/terraform-provider-sendgrid/sendgrid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 
 // Generate the Terraform provider documentation using `tfplugindocs`:
-//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name anna-money/sendgrid
+//go:generate go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-name daco-tech/sendgrid
 
 func main() {
 	var debugMode bool

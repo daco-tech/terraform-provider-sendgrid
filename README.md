@@ -41,5 +41,5 @@ Thanks @yinzara for the latest changes (ref Trois-Six).
 
 Thanks @Trois-Six for the code fork: https://github.com/Trois-Six/terraform-provider-sendgrid
 
-Thanks @anna-mony - rebased your master branch: https://github.com/anna-money/terraform-provider-sendgrid
+Thanks @anna-money - rebased your master branch: https://github.com/anna-money/terraform-provider-sendgrid
 

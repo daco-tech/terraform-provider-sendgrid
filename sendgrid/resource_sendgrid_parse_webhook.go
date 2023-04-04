@@ -22,7 +22,7 @@ package sendgrid
 import (
 	"context"
 
-	sendgrid "github.com/anna-money/terraform-provider-sendgrid/sdk"
+	sendgrid "github.com/daco-tech/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )

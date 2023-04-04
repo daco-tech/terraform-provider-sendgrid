@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anna-money/terraform-provider-sendgrid/sendgrid"
+	"github.com/daco-tech/terraform-provider-sendgrid/sendgrid"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
