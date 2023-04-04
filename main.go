@@ -4,7 +4,7 @@ import (
 	"flag"
 
 	"github.com/daco-tech/terraform-provider-sendgrid/sendgrid"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+	"github.com/hashicorp/terraform-plugin-sdk"
 )
 
 // Generate the Terraform provider documentation using `tfplugindocs`:
