@@ -7,7 +7,7 @@
 
 ### Forked from ⚠ Archived repository to update and add some functionality
 
-#### **https://github.com/Trois-Six/terraform-provider-sendgrid**
+#### Ref: **https://github.com/Trois-Six/terraform-provider-sendgrid**
 
 
 To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
