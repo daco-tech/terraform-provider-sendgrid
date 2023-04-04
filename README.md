@@ -32,7 +32,7 @@ $ make testacc
 
 The documentation is created thank's to a fork of https://github.com/terraform-providers/terraform-provider-baiducloud/tree/master/gendocs.
 
-## [Terraform Registry](https://registry.terraform.io/providers/Trois-Six/sendgrid)
+## [Terraform Registry](https://registry.terraform.io/providers/daco-tech/sendgrid)
 
 ## Known issues
 
@@ -42,4 +42,5 @@ When you set one or multiple scopes, even if you don't set the scopes `sender_ve
 
 ### Acknowledgments
 
-Thanks @yinzara for the latest changes that I loosely copied.
+Thanks @yinzara for the latest changes (ref Trois-Six).
+Thanks @Trois-Six for the code fork.
