@@ -5,11 +5,6 @@
 # Terraform Provider for [Sendgrid](https://sendgrid.com)
 
 
-### Forked from ⚠ Archived repository to update and add some functionality
-
-#### Ref: **https://github.com/Trois-Six/terraform-provider-sendgrid**
-
-
 To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
 
 ```sh
@@ -43,4 +38,8 @@ When you set one or multiple scopes, even if you don't set the scopes `sender_ve
 ### Acknowledgments
 
 Thanks @yinzara for the latest changes (ref Trois-Six).
-Thanks @Trois-Six for the code fork.
+
+Thanks @Trois-Six for the code fork: https://github.com/Trois-Six/terraform-provider-sendgrid
+
+Thanks @anna-mony - rebased your master branch: https://github.com/anna-money/terraform-provider-sendgrid
+
